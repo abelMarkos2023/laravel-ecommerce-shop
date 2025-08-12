@@ -14,7 +14,16 @@ class CategoryController extends Controller
     public function index()
     {
 
-        $categories = Category::all();
+        $categories = Category::query();
+
+        if(request()->query('name')){
+            $categories->where('name', 'like', '%' . request('name') . '%');
+        }
+        if(request()->query('status')){
+            $categories->where('status', request('status'));
+        }
+
+        $categories = $categories->paginate(2);
 
         return view('dashboard.categories.index', compact('categories'));
     }
@@ -81,13 +90,13 @@ class CategoryController extends Controller
         if($request->hasFile('image')){
             Storage::disk('public')->delete($old_path);
         }
-        return redirect()->route('categories.index')->with('success', 'Category Updated Successfully');
+        return redirect()->route('categories.index')->with('info', 'Category Updated Successfully');
     }
 
     public function destroy(Category $category)
     {
         $category->delete();
-        return redirect()->route('categories.index')->with('delete', 'Category Deleted Successfully');
+        return redirect()->route('categories.index')->with('danger', 'Category Deleted Successfully');
     }
 
     private function validateRules($id){
