@@ -29,7 +29,7 @@
             <th scope="col">ID</th>
             <th scope="col">Image</th>
             <th scope="col">Name</th>
-            <th>Parent ID</th>
+            <th>Parent</th>
             <th scope="col">Slug</th>
             <th scope="col">Status</th>
             <th scope="col">Created At</th>
@@ -45,7 +45,7 @@
             <th scope="row">{{$category->id}}</th>
             <td><img src="{{ asset('storage/'.$category->image) }}" width="50" height="50" alt=""></td>
             <td>{{$category->name}}</td>
-            <th>{{ $category->parent_id }}</th>
+            <th>{{ $category->parent_name }}</th>
             <td>{{$category->slug}}</td>
             <td>
                 @if($category->status == 'active')
@@ -73,6 +73,6 @@
         @endforelse
 </table>
 
-{{ $categories->links() }}
+{{ $categories->withQueryString()->links() }}
 
 @endsection
