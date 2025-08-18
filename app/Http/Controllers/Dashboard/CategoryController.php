@@ -104,4 +104,25 @@ class CategoryController extends Controller
             'parent_id' => ['nullable', 'exists:categories,id'],
         ];
     }
+
+    public function trash()
+    {
+        $categories = Category::onlyTrashed()->paginate(2);
+        return view('dashboard.categories.trash', compact('categories'));
+    }
+
+    public function restoreCAtegory($id)
+    {
+        $category = Category::withTrashed()->findOrFail($id);
+
+        $category->restore();
+        return redirect()->route('categories.index')->with('success', 'Category Restored Successfully');
+    }
+
+    public function forceDeleteCategory( $id)
+    {
+        $category = Category::withTrashed()->findOrFail($id);
+        $category->forceDelete();
+        return redirect()->route('categories.trash')->with('success', 'Category Permanently Deleted Successfully');
+    }
 }

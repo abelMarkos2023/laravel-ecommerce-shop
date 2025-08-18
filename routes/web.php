@@ -23,6 +23,18 @@ Route::get('/dashboard', function () {
     return view('dashboard.index');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::get('categories/trash', [CategoryController::class, 'trash'])
+    ->middleware(['auth'])
+    ->name('categories.trash');
+
+    Route::put('categories/{category}/restore', [CategoryController::class, 'restoreCategory'])
+    ->middleware(['auth'])
+    ->name('categories.restore');
+
+    Route::delete('categories/{category}/force-delete', [CategoryController::class, 'forceDeleteCategory'])
+    ->middleware(['auth'])
+    ->name('categories.force-delete');
+
 Route::resource('categories', CategoryController::class)->middleware(['auth', 'verified']);
 
 Route::middleware('auth')->group(function () {
