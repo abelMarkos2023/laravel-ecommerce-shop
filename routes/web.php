@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Dashboard\CategoryController;
+use App\Http\Controllers\Dashboard\ProductController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -35,7 +36,8 @@ Route::get('categories/trash', [CategoryController::class, 'trash'])
     ->middleware(['auth'])
     ->name('categories.force-delete');
 
-Route::resource('categories', CategoryController::class)->middleware(['auth', 'verified']);
+Route::resource('categories', CategoryController::class)->middleware(['auth']);
+Route::resource('products', ProductController::class)->middleware(['auth']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
